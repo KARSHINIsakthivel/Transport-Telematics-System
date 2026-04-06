@@ -1,0 +1,34 @@
+const express = require("express");
+const cors = require("cors");
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+let vehicles = [
+  { id: 1, name: "Truck A", driver:"Ravi", status: "Running", speed: 45, lat: 13.08, lng: 80.27 },
+  { id: 2, name: "Van B", driver:"Kumar", status: "Stopped", speed: 0, lat: 13.07, lng: 80.26 },
+  { id: 3, name: "Car C", driver:"Arun", status: "Idle", speed: 10, lat: 13.09, lng: 80.25 }
+];
+
+app.get("/", (req, res) => {
+  res.send("Backend Working ✅");
+});
+
+app.get("/api/vehicles", (req, res) => {
+  res.json(vehicles);
+});
+
+setInterval(() => {
+  vehicles = vehicles.map(v => ({
+    ...v,
+    lat: v.lat + (Math.random() * 0.002 - 0.001),
+    lng: v.lng + (Math.random() * 0.002 - 0.001),
+    speed: Math.floor(Math.random() * 60)
+  }));
+}, 3000);
+
+app.listen(5000, () => {
+  console.log("Backend running on port 5000");
+});
